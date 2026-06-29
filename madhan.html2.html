@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAINT - Private Makeup Atelier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Lato:ital,wght@0,300;0,400;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark:#7a0339;
+            --bg-darker: #7a0339;
+            --bg-light: #ffffff;
+            --text-light:#FFFFFF;
+            --text-dark: #361e27;
+            --accent-gold: #cca45b;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Lato', sans-serif;
+            --font-logo: 'Cinzel', serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Reusable Classes */
+        .container {
+            padding: 0 20px;
+            max-width: 600px; /* Constraining width to mimic mobile view */
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .heading {
+            font-family: var(--font-heading);
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .subheading {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 1.1rem;
+            color: #666;
+        }
+
+        /* Navbar */
+        header {
+            background-color: var(--bg-dark);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: var(--font-logo);
+            color: var(--accent-gold);
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-decoration: none;
+        }
+
+        .hamburger {
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(180deg, var(--bg-dark) 0%, var(--bg-darker) 100%);
+            color: var(--text-light);
+            text-align: center;
+            padding: 60px 20px;
+            border-bottom-left-radius: 20px;
+            border-bottom-right-radius: 20px;
+        }
+
+        .hero .eyebrow {
+            color: #a89f9e;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: 3rem;
+            line-height: 1.1;
+            margin-bottom: 5px;
+        }
+
+        .hero h2 {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-weight: 400;
+            color: var(--accent-gold);
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .hero p {
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-size: 1rem;
+            margin-bottom: 40px;
+            color: #e0dcd9;
+            padding: 0 10px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background-color: var(--accent-gold);
+            color: var(--bg-dark);
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-style: italic;
+            font-weight: 700;
+            margin-bottom: 15px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-secondary {
+            display: inline-block;
+            background-color: transparent;
+            color: var(--text-light);
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-style: italic;
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-bottom: 40px;
+        }
+
+        .hero-footer {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #a89f9e;
+            text-transform: uppercase;
+        }
+
+        /* Paint Categories */
+        .categories {
+            padding: 60px 0;
+            background-color: var(--bg-light);
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+
+        .card-img-placeholder {
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card-img-placeholder::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 15px;
+            height: 15px;
+            background: rgba(255,255,255,0.5);
+            border-radius: 50%;
+        }
+
+        .card-img-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .card-desc {
+            font-style: italic;
+            color: #666;
+            font-size: 0.95rem;
+        }
+
+        /* Mehendhi Designs & Hairstyle Sections */
+        .mehendhi-section,
+        .hairstyle-section {
+            padding: 60px 0;
+            background-color: #f7f4ed;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--bg-darker);
+            color: var(--text-light);
+            padding: 60px 20px 30px;
+        }
+
+        .footer-logo {
+            font-family: var(--font-logo);
+            color: var(--accent-gold);
+            font-size: 2rem;
+            margin-bottom: 15px;
+        }
+
+        .footer-desc {
+            font-family: var(--font-heading);
+            font-style: italic;
+            margin-bottom: 5.0px;
+            color: #e0dcd9;
+        }
+
+        .footer-links {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-heading);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: var(--accent-gold);
+        }
+
+        .footer-col ul {
+            list-style: none;
+        }
+
+        .footer-col ul li {
+            margin-bottom: 10px;
+            font-size: 0.9rem;
+            color: #e0dcd9;
+        }
+
+        .newsletter {
+            margin-bottom: 40px;
+        }
+
+        .newsletter h4 {
+            font-family: var(--font-heading);
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .newsletter p {
+            font-size: 0.8rem;
+            margin-bottom: 15px;
+            color: #e0dcd9;
+        }
+
+        /* Custom Form Styling */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .booking-form input,
+        .booking-form select,
+        .booking-form textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 5px;
+            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            font-family: var(--font-body);
+            outline: none;
+        }
+
+        .booking-form input::placeholder,
+        .booking-form textarea::placeholder {
+            color: #ccc;
+        }
+
+        .booking-form select option {
+            background: var(--bg-darker);
+            color: white;
+        }
+
+        .booking-form button {
+            background: var(--accent-gold);
+            color: var(--bg-darker);
+            border: none;
+            padding: 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: var(--font-heading);
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .booking-form button:hover {
+            background: #b5924f;
+        }
+
+        .copyright {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #888;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">BEAUTY</a>
+            <div class="hamburger">☰</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <span class="eyebrow">welcome to </span>
+            <h1>SUBALUXE.</h1>
+            <h2>enhance your</h2>
+            <p>NATURAL BEAUTY.</p>
+            
+            <a href="#bookingSection" class="btn-primary">Book an appointment</a>
+            <br>
+            <a href="#" class="btn-secondary">Explore More</a>
+            
+            <div class="hero-footer">
+                Trusted for 1,200+ clients..
+            </div>
+        </div>
+    </section>
+
+    <section class="categories">
+        <div class="container">
+            <div class="section-header">
+                <span class="eyebrow">our services</span>
+                <h2 class="heading">TYPES OF MAKEUP</h2>
+                <p class="subheading">makeup & mehendhi</p>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="suba.jpg" alt="bridal makeup">
+                </div>
+                 <div class="card-content">
+                    <h3 class="card-title">Bridal makeup </h3>
+                    <p class="card-desc">Traditional, fusion, and destination bridal looks built to outlast the longest reception.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="ss (2).jpg" alt="party makeup">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">party makeup</h3>
+                    <p class="card-desc"> Choose the perfect vibe for your look--from short and sassy to bold and glowing..</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="natural.jpg.jpg" alt="natural Makeup">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">natural makeup</h3>
+                    <p class="card-desc">Barely-there makeup enhancing your features with soft, neutral tones.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="ee.jpg" alt="HD makeup">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">HD makeup</h3>
+                    <p class="card-desc">Flawless, camera-ready finish with high-definition products for a smooth, airbrushed look.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="en.jpg" alt="engagement makeup">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">engagement makeup</h3>
+                    <p class="card-desc">Soft glam looks tailored for engagement ceremonies and pre-wedding functions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mehendhi-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="eyebrow">patterns of love</span>
+                <h2 class="heading">MEHENDHI DESIGN'S</h2>
+                <p class="subheading">"Art on my hands, love in my heart"</p>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="bb.jpg" alt="bridal mehendhi">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Bridal mehendhi</h3>
+                    <p class="card-desc">Intricate full-hand and full-arm bridal designs with fine detailing.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="arabic.jpg" alt="arabic mehendhi">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Arabic mehendhi</h3>
+                    <p class="card-desc">Bold floral and vine patterns with flowing, spaced-out strokes.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="cc.jpg" alt="minimal mehendhi">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Minimal mehendhi</h3>
+                    <p class="card-desc">Simple, elegant designs perfect for everyday and casual occasions.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="indo.jpg" alt="indho arabic">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Indo-Arabic mehendhi</h3>
+                    <p class="card-desc">A fusion style blending fine traditional detailing with bold Arabic strokes.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="simple.jpg" alt="glitter mehendhi">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Glitter mehendhi</h3>
+                    <p class="card-desc">Henna designs finished with shimmer and glitter accents for a festive touch.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="hairstyle-section">
+        <div class="container">
+            <div class="section-header">
+                <span class="eyebrow">crowning glory</span>
+                <h2 class="heading">HAIR STYLING</h2>
+                <p class="subheading">styles that complete every look</p>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="bridalhair.jpg" alt="bridal hair">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Bridal hairstyle</h3>
+                    <p class="card-desc">Elegant updos and braided styles designed to hold through the whole event.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="curl.jpg" alt="curlhair">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Curls & waves</h3>
+                    <p class="card-desc">Soft curls and beach waves for a relaxed, romantic finish.</p>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="ss.jpg" alt="bridal style">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Braided styles</h3>
+                    <p class="card-desc">Classic and fishtail braids, perfect for both casual and formal looks.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="mm.jpg" alt="updo styling">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Updo styling</h3>
+                    <p class="card-desc">Sleek buns and chignons for a polished, sophisticated appearance.</p>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-img-placeholder">
+                    <img src="open.jpg" alt="open hairstyle">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">Open hairstyle</h3>
+                    <p class="card-desc">Voluminous blowouts and styled-open looks for an effortless glam finish.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-logo">"READY FOR YOUR TRANSFORMATION"</div>
+            <p class="footer-desc">We believe every client deserves personalized care and stunning results. Our experienced beauticians combine creativity, skill, and premium products to create looks that complement your unique personality</p>
+            
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>ABOUT US</h4>
+                    <ul>
+                        <li>Best Services</li>
+                        <li>Safe & Hygienic Environment</li>
+                        <li>Premium products</li>
+                        <li>Cheap price</li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li>+91 93607 59103</li>
+                        <li>subans@gmail.com</li>
+                        <li>Instagram: smile3753</li>
+                        <li>Yellow town, Pondicherry, near to Pondy new bus stand...</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Correctly placed Booking Form Section inside Body -->
+            <div class="newsletter" id="bookingSection">
+                <h4>"BOOK NOW"</h4>
+                <p>"You're one appointment away from a better mood. Let's get you on the schedule!"</p>
+                
+                <form id="bookingForm" class="booking-form">
+                    <input type="text" id="name" placeholder="Name" required>
+                    <input type="text" id="phone" placeholder="Phone" required>
+                    <input type="email" id="email" placeholder="Email" required>
+                    
+                    <select id="service">
+                        <option>Bridal Makeup</option>
+                        <option>Party Makeup</option>
+                        <option>HD Makeup</option>
+                        <option>Mehendhi</option>
+                        <option>Hair Style</option>
+                    </select>
+                    
+                    <input type="date" id="date" required>
+                    <input type="time" id="time" required>
+                    <textarea id="message" placeholder="Your Message..."></textarea>
+                    
+                    <button type="submit">Book an Appointment</button>
+                </form>
+            </div>
+
+            <div class="copyright">
+                &copy; "Invest in your beauty;<br>
+                "it is the ultimate form of self-care."
+            </div>
+        </div>
+    </footer>
+
+    <!-- Form Submit and Backend API connection Script -->
+    <script>
+        document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const bookingData = {
+                name: document.getElementById('name').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                service: document.getElementById('service').value,
+                date: document.getElementById('date').value,
+                time: document.getElementById('time').value,
+                message: document.getElementById('message').value
+            };
+
+            try {
+                const response = await fetch('http://localhost:5000/api/book', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert('Appointment Booked Successfully!');
+                    document.getElementById('bookingForm').reset();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Backend server run aagavillai or connect aagavillai!');
+            }
+        });
+    </script>
+
+</body>
+</html>
